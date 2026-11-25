@@ -1,27 +1,19 @@
-import {
-  SlashCommandBuilder,
-  type ChatInputCommandInteraction,
-} from "discord.js";
-import type { Manager } from "moonlink.js";
+import { moonlink } from "@/api/moonlink.js";
 import { skipTrack } from "@/playback/playerControls.js";
+import type { PrefixCommand } from "@/types/prefixCommand.js";
 
-export function createSkipCommand(moonlink: Manager) {
-  return {
-    data: new SlashCommandBuilder()
-      .setName("skip")
-      .setDescription("Skip the currently playing track."),
+export const skipCommand: PrefixCommand = {
+  name: "skip",
+  description: "Skip the currently playing track.",
+  aliases: ["s"],
 
-    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-      if (!interaction.guildId) {
-        await interaction.reply({
-          content: "This command can only be used inside a server.",
-          ephemeral: true,
-        });
-        return;
-      }
+  async execute({ message }): Promise<void> {
+    if (!message.guild) {
+      await message.reply("This command can only be used inside a server.");
+      return;
+    }
 
-      const status = await skipTrack(moonlink, interaction.guildId);
-      await interaction.reply(status);
-    },
-  };
-}
+    const status = await skipTrack(moonlink, message.guild.id);
+    await message.reply(status);
+  },
+};

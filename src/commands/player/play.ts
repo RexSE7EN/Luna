@@ -1,41 +1,35 @@
-import { SlashCommandBuilder, type ChatInputCommandInteraction, type GuildMember } from "discord.js";
-import type { Manager } from "moonlink.js";
+import { moonlink } from "@/api/moonlink.js";
 import { playTrack } from "@/playback/playerControls.js";
+import type { PrefixCommand } from "@/types/prefixCommand.js";
 
-export function createPlayCommand(moonlink: Manager) {
-  return {
-    data: new SlashCommandBuilder()
-      .setName("play")
-      .setDescription("Search and play a track or playlist in your voice channel.")
-      .addStringOption((opt) =>
-        opt.setName("query").setDescription("Song name or URL").setRequired(true)
-      ),
+export const playCommand: PrefixCommand = {
+  name: "play",
+  description: "Search and play a track or playlist.",
+  aliases: ["p"],
 
-    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-      const member = interaction.member as GuildMember | null;
-      const voiceChannel = member?.voice.channel;
+  async execute({ message }, args): Promise<void> {
+    if (!message.guild || !message.channelId) return;
 
-      if (!interaction.guildId || !interaction.channelId) {
-        await interaction.reply({ content: "Use this inside a server.", ephemeral: true });
-        return;
-      }
-      if (!voiceChannel) {
-        await interaction.reply({ content: "Join a voice channel first.", ephemeral: true });
-        return;
-      }
+    const voiceChannel = message.member?.voice.channel;
+    if (!voiceChannel) {
+      await message.reply("Join a voice channel first.");
+      return;
+    }
 
-      const query = interaction.options.getString("query", true);
-      await interaction.deferReply();
+    const query = args.join(" ").trim();
+    if (!query) {
+      await message.reply("Provide a song name or URL.");
+      return;
+    }
 
-      const status = await playTrack(moonlink, {
-        guildId: interaction.guildId,
-        voiceChannelId: voiceChannel.id,
-        textChannelId: interaction.channelId,
-        query,
-        requester: interaction.user,
-      });
+    const status = await playTrack(moonlink, {
+      guildId: message.guild.id,
+      voiceChannelId: voiceChannel.id,
+      textChannelId: message.channelId,
+      query,
+      requester: message.author,
+    });
 
-      await interaction.editReply(status);
-    },
-  };
-}
+    await message.reply(status);
+  },
+};

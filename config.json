@@ -1,0 +1,31 @@
+{
+    "prefix": "ln?",
+    "version": "0.0.1",
+    "sync_commands_globally": false,
+	  "status_update_interval": 7.0,
+    "statuses": [
+      {
+          "type": "custom",
+          "activity": "Playing",
+          "text": "genshin with you!"
+      },
+      {
+          "type": "custom",
+          "activity": "Walking",
+          "text": "with Traveller!"
+      },
+      {
+          "type": "custom",
+          "activity": "Drinking",
+          "text": "osmanthus wine."
+      },
+      {
+          "type": "custom",
+          "activity": "Pulling",
+          "text": "a 5 star character."
+      }
+    ],
+    "owners": [
+        379246165268627458
+    ]
+}
