@@ -1,0 +1,38 @@
+{
+  "name": "luna",
+  "version": "0.0.1",
+  "description": "A discord bot to help your gaming journey.",
+  "homepage": "https://github.com/RexSE7EN/Luna#readme",
+  "bugs": {
+    "url": "https://github.com/RexSE7EN/Luna/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RexSE7EN/Luna.git"
+  },
+  "license": "MIT",
+  "author": "RexSE7EN",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "deploy": "tsx src/commands/utility/deployCommands.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsc-alias": "^1.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "dependencies": {
+    "discord.js": "^14.28.1",
+    "dotenv": "^18.0.10",
+    "moonlink.js": "^5.2.0"
+  }
+}
