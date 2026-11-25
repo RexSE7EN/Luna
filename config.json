@@ -2,7 +2,7 @@
     "prefix": "ln?",
     "version": "0.0.1",
     "sync_commands_globally": false,
-	  "status_update_interval": 7.0,
+    "status_update_interval": 7.0,
     "statuses": [
       {
           "type": "custom",
